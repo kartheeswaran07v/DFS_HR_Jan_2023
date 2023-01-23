@@ -508,9 +508,9 @@ def doc():
 
         files = request.files.getlist("file")  # other multiple files
         photo = request.files.get('photo')  # photo file
-        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo.filename))
-        for file in files:
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+        # photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo.filename))
+        # for file in files:
+        #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
         # Save pic in folder
 
         # new_doc = documentMaster(documentName=photo, documentDirectory=UPLOAD_FOLDER, employee=employee_element)
