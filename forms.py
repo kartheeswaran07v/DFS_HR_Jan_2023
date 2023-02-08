@@ -29,7 +29,7 @@ class RegistrationForm(FlaskForm):
     mobile_h = IntegerField("Home Mobile No.:", validators=[DataRequired()])
     personal_mail = EmailField("Personal Mail ID: ")
     address_home = StringField("Home Address (Country of Origin):")
-    passport_no = IntegerField("Passport No.: ")
+    passport_no = StringField("Passport No.: ")
     nationality = StringField("Nationality: ")
     own_car = BooleanField("Driving Own Car?: ")
     car_rent = BooleanField("Company Car:")
