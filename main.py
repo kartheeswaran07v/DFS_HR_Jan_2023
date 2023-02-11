@@ -685,7 +685,7 @@ def roster():
 
         for i in range(len(a['hotel'])):
             if a['hotel'][i] != '':  # check if there's no entry
-                hotel_element = db.session.query(hotelMaster).filter_by(name=a['hotel'][i]).first()
+                hotel_element = db.session.query(hotelMaster).filter_by(id=a['hotel'][i]).first()
                 nameStr = "name" + str(i + 1)
                 timeInStr1 = "timeInA" + str(i + 1)
                 timeOutStr1 = "timeOutA" + str(i + 1)
@@ -697,7 +697,7 @@ def roster():
 
                 for j in range(len(a[nameStr])):
                     if a[nameStr][j] != '':
-                        employee_element = db.session.query(employeeMaster).filter_by(name=a[nameStr][j]).first()
+                        employee_element = db.session.query(employeeMaster).filter_by(id=a[nameStr][j]).first()
                         new_entry = rosterEntryMaster(timeIn1=a[timeInStr1][j], timeOut1=a[timeOutStr1][j],
                                                       timeIn2=a[timeInStr2][j],
                                                       timeOut2=a[timeOutStr2][j], pickUp=a[pickup][j],
@@ -725,6 +725,9 @@ def roster():
 def roster_date():
     all_roster = rosterMaster.query.all()
     dates_list = []
+    employees = employeeMaster.query.all()
+    hotels = hotelMaster.query.all()
+    data_ = [employees, hotels]
     for i in all_roster:
         date_el = i.date
         dates_list.append(date_el)
@@ -740,7 +743,7 @@ def roster_date():
             return render_template("roster_date.html", array=dates_list,
                                    msg="Roster with the same date exists. Choose new one.")
         elif date_roster:
-            return render_template('roster_new.html', date_roster=date_roster)
+            return render_template('roster_new_picklist.html', date_roster=date_roster, data=data_)
         else:
             return render_template("roster_date.html", array=dates_list, msg="Choose a date to continue")
 
