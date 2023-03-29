@@ -626,6 +626,9 @@ def passport():
 def timesheet():
     employee_list = employeeMaster.query.all()
     employee_name = [i.name for i in employee_list]
+    employees = employeeMaster.query.all()
+    hotels = hotelMaster.query.all()
+    data_ = [employees, hotels]
     if request.method == 'POST':
         data = request.form.to_dict(flat=False)
         a = jsonify(data).json
@@ -652,7 +655,7 @@ def timesheet():
 
         return render_template("ts_success_db.html", data=a, len=range(len(a['name'])))
 
-    return render_template("timesheet.html", array=employee_name)
+    return render_template("timesheet.html", array=employee_name, data=data_)
 
 
 @app.route("/roster", methods=["GET", "POST"])
@@ -882,6 +885,9 @@ def roster_single_edit(roster_id):
     roster_entries = db.session.query(rosterEntryMaster).filter_by(rosterID=roster_id).all()
     employee_list = []
     hotel_list = []
+    employees = employeeMaster.query.all()
+    hotels = hotelMaster.query.all()
+    data_ = [employees, hotels]
     roster_element = rosterMaster.query.get(roster_id)
     roster_date = roster_element.date
     roster_day = datetime.datetime.strptime(roster_date, "%Y-%m-%d").strftime('%A')
@@ -893,7 +899,7 @@ def roster_single_edit(roster_id):
         employee_list.append(employee.name)
     return render_template("roster_entries_edit.html", entries=roster_entries, employees=employee_list,
                            hotels=hotel_list,
-                           len=range(len(roster_entries)), date=roster_full_date, day=roster_day)
+                           len=range(len(roster_entries)), date=roster_full_date, day=roster_day, data=data_)
 
 
 @app.route("/add_roster_element/<roster_id>", methods=["GET", "POST"])
@@ -972,12 +978,15 @@ def timesheet_single_edit(timesheet_id):
     hotel_element = hotelMaster.query.get(ts_element.hotelID)
     hotel_name = hotel_element.name
     employee_list = []
+    employees = employeeMaster.query.all()
+    hotels = hotelMaster.query.all()
+    data_ = [employees, hotels]
     for i in timesheet_entries:
         employee = db.session.query(employeeMaster).filter_by(id=i.employeeID).first()
         employee_list.append(employee.name)
     return render_template("timesheet_entries_edit.html", entries=timesheet_entries, employees=employee_list,
                            hotel_name=hotel_name,
-                           len=range(len(timesheet_entries)), date__=date__, sheet=sheet_no)
+                           len=range(len(timesheet_entries)), date__=date__, sheet=sheet_no, data=data_)
 
 
 @app.route("/add_ts_element/<ts_id>", methods=["GET", "POST"])
